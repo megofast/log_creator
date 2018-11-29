@@ -1,7 +1,7 @@
 # log_creator
 A short python program to create logs from a database (containing blog post visits) using sql queries.
 ## Requirements
-- Python 3(
+- Python 3
 - Postgresql running with the news database loaded into it.
   - The news database is included in this repo.
 - A Vagrant environment.
