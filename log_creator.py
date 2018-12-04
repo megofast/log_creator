@@ -1,25 +1,31 @@
 #!/usr/bin/env python3
 
-### Log Creator
-### By: David Rosinski
+# Log Creator
+# By: David Rosinski
 
 import psycopg2
 
 # The global variable for the main program loop
 run = True
 
+
 # Function to connect to the database and run query
 def run_query(sql_query):
-    db = psycopg2.connect("dbname=news")
-    cursor = db.cursor()
-    # Execute the query sent into the function
-    cursor.execute(sql_query)
-    data = cursor.fetchall()
-    db.close()
-    return data
-    
+    try:
+        db = psycopg2.connect("dbname=news")
+        cursor = db.cursor()
+        # Execute the query sent into the function
+        cursor.execute(sql_query)
+        data = cursor.fetchall()
+        db.close()
+        return data
+    except Exception:
+        print("There was an error connecting to the database, now exiting.")
+        run = False
+
+
 def selection_1():
-    # Send query - What are 3 most popular articles? 
+    # Send query - What are 3 most popular articles?
     results = run_query('''select articles.title,
                             concat(count(*), ' Views')
                             from log
@@ -33,7 +39,8 @@ def selection_1():
     print("----------------------------------------------------------")
     for row in results:
         print(("{0:<40} | {1:>15}".format(*row)))
-    
+
+
 def selection_2():
     # Send query - Who are the most popular authors?
     results = run_query('''with tots as
@@ -51,12 +58,13 @@ def selection_2():
                             group by authors.name
                             order by sum(tots.views) desc
                             ''')
-    
+
     print("\n{0:^30} | {1:^15}".format("Author", "Views"))
     print("------------------------------------------------")
     for row in results:
         print(("{0:<30} | {1:>15}".format(*row)))
-    
+
+
 def selection_3():
     # Send query - Wich day(s) did more than 1% requests lead to errors?
     results = run_query('''with error as
@@ -78,19 +86,22 @@ def selection_3():
     print("----------------------------")
     for row in results:
         print(("{0:<15} | {1:>10}".format(*row)))
-    
+
+
 def selection_4():
     global run
     print("Thank you for using the Log Creator")
     run = False    # Stops the main program loop.
 
+
 # Define the dictionary for the menu selections
 selections = {
-    1 : selection_1,
-    2 : selection_2,
-    3 : selection_3,
-    4 : selection_4,
+    1: selection_1,
+    2: selection_2,
+    3: selection_3,
+    4: selection_4,
     }
+
 
 def main():
     while run:
@@ -108,7 +119,8 @@ def main():
                 selections[user_input]()
             else:
                 raise    # Raise an exception to display error message
-        except:
+        except Exception:
             print("\n Please make your selection with 1-4.\n")
-    
+
+
 main()
