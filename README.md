@@ -25,3 +25,7 @@ A short python program to create logs from a database (containing blog post visi
 - Navigate to the directory log_creator.py is located in.
 - From the console type the following:
     - `python3 log_creator.py`
+
+## Attributions
+- The vagrant_config.zip file is from Udacity's Full Stack Web Development Nanodegree.
+- The newsdata.zip file was created and is available from Udacity's Full Stack Web Developement Nanodegree
